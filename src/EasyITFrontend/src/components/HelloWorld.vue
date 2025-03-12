@@ -1,5 +1,20 @@
+<template>
+ 
+  
+  <body>
+    
+    <h1>
+      {{ msg }}
+    </h1>
+  </body>
+
+</template>
+
 <script >
+import NavBar from './NavBar.vue';
+
 export default{
+  components:{NavBar},
   name:'Hello World',
   data(){
     return{
@@ -21,10 +36,6 @@ export default{
 
 </script>
 
-<template>
-  <h1>
-    {{msg}}
-  </h1>
-</template>
+
 
 
