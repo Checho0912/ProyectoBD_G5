@@ -1,6 +1,6 @@
 package com.proyecto.EasyIT.Service;
 
-import com.proyecto.EasyIT.Domain.Country;
+import com.proyecto.EasyIT.Model.Country;
 
 import java.util.List;
 

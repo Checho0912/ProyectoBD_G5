@@ -1,41 +1,56 @@
 <template>
- 
-  
+
+
   <body>
-    
-    <h1>
-      {{ msg }}
-    </h1>
+
+    <table class="table table-bordered text-center my-3">
+      <thead>
+          <tr>
+              <th scope="col">ID Country</th>
+              <th scope="col">ID Name</th>
+              <th scope="col">Region ID</th>
+              
+          </tr>
+      </thead>
+      <tbody>
+          <tr v-for="country in countries" :key="country.idCountry" >
+              <td>{{country.idCountry}}</td>
+              <td>{{country.country_Name}}</td>
+              <td>{{country.region_id}}</td>
+          </tr>
+          
+      </tbody>
+  </table>
   </body>
 
 </template>
 
-<script >
+<script>
+import axios from 'axios';
 import NavBar from './NavBar.vue';
 
-export default{
-  components:{NavBar},
-  name:'Hello World',
-  data(){
-    return{
-      msg:'hola'
+export default {
+  name: 'Hello World',
+  data() {
+    return {
+      countries:[],
     }
   },
-  mounted(){
-    fetch("http://localhost:8080/api/messages/hello")
-    .then((response)=>response.text())
-    .then((data)=>{
-      
-      this.msg = data;
-    })
-    .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+  mounted() {
+    this.fetchCountries();
+  }, 
+  methods: {
+    async fetchCountries() {
+      try {
+        const response = await axios.get('http://localhost:8080/api/messages/hello');
+        this.countries = response.data;
+        
+      } catch (error) {
+        
+        console.error(error);
+      }
+    }
   }
-}
+};
 
 </script>
-
-
-
-
