@@ -10,7 +10,7 @@
             <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
                 <ul class="navbar-nav text-center">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/computadoras">Computadoras</a>
+                        <a class="nav-link" aria-current="page" href="/dispositivos">Dispositivos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/no_retornables">Dispositivos no retornables</a>

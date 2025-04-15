@@ -26,25 +26,4 @@ public class ComputadoraController {
         return computadoras;
     }
 
-//    @GetMapping("/get")
-//    public Dispositivo_de_computacion getCompu(){
-//        return computadoraService.getComputadora(1);
-//    }
-//
-//
-//    @PostMapping("")
-//    public void save(){
-//
-//    }
-//
-//    @PutMapping("")
-//    public void update(){
-//
-//    }
-//
-//    @DeleteMapping("")
-//    public void delete(){
-//
-//    }
-
 }
