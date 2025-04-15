@@ -40,19 +40,44 @@ public class DispositivoController {
 
     //Procedimientos almacenados
     @GetMapping("/getProcedure")
-    public List<Dispositivo> testStoredProcedure(){
+    public List<Dispositivo> getAllProcedure(){
         return dispositivoService.GET_ALL_DISPOSITIVOS();
     }
 
-    //DELETE
+    //CREATE procedure
 
-    @PostMapping("/deleteProcedure")
-    public void deleteProcedure(String id){
-        dispositivoService.DELETE_DISPOSITIVO();
+    @PostMapping("/createProcedure")
+    public ResponseEntity<String> createProcedure(@RequestBody Dispositivo dto) {
+        dispositivoService.CREATE_DISPOSITIVO(
+                dto.getTipoDispositivo(),
+                dto.getManufacturador(),
+                dto.getModelo(),
+                dto.getNumeroSerial(),
+                dto.getIdUsuario()
+        );
+        return ResponseEntity.ok("Dispositivo creado exitosamente.");
     }
 
+    //DELETE PROCEDURE
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteDispositivo(@PathVariable Integer id) {
+        dispositivoService.DELETE_DISPOSITIVO(id);
+        return ResponseEntity.ok("Dispositivo eliminado exitosamente.");
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateDispositivo(@PathVariable Integer id, @RequestBody Dispositivo dto) {
+        dispositivoService.UPDATE_DISPOSITIVO(
+                id,
+                dto.getTipoDispositivo(),
+                dto.getManufacturador(),
+                dto.getModelo(),
+                dto.getNumeroSerial(),
+                dto.getIdUsuario()
+        );
+        return ResponseEntity.ok("Dispositivo actualizado exitosamente.");
+    }
 
 
 }
