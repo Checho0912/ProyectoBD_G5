@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import NoRetornablesView from '@/views/NoRetornablesView.vue'
+import TicketsView from '@/views/TicketsView.vue'
 import DispositivosView from '@/views/DispositivosView.vue'
-import OficinaView from '@/views/OficinaView.vue'
+import HistorialView from '@/views/HistorialView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -12,9 +12,9 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/no_retornables',
-      name: 'table',
-      component:NoRetornablesView,
+      path: '/tickets',
+      name: 'tickets',
+      component:TicketsView,
       
      
     },{
@@ -23,9 +23,9 @@ const router = createRouter({
       component:DispositivosView,
     },
     {
-      path:'/oficina',
-      name:'oficina',
-      component:OficinaView
+      path:'/historial',
+      name:'historial',
+      component:HistorialView
     }
   ],
 })

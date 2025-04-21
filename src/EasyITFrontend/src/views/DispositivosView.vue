@@ -12,7 +12,7 @@ import NavBar from '@/components/NavBar.vue';
         Dispositivos
       </h1>
 
-      <div class="container">
+      <div class="container ">
         <div class="row align-items-end">
           <!-- Botón Crear -->
           <div class="col-md-4 mb-2">
@@ -273,30 +273,7 @@ export default {
         alert("No se encontró el dispositivo.");
       }
     },
-    async crearDispositivo() {
-      try {
-        await axios.post("http://localhost:8080/dispositivo/insertProcedure/nuevoDispositivo", {
-          ...this.nuevoDispositivo // omit user ID
-        });
 
-        // Recargar tabla después de crear
-        this.fetchDispositivosByView();
-
-
-
-
-        // Reset form
-        this.nuevoDispositivo = {
-          tipoDispositivo: '',
-          manufacturador: '',
-          modelo: '',
-          numeroSerial: '',
-        };
-      } catch (error) {
-        console.error("Error al crear dispositivo:", error);
-        console.log("Ocurrió un error al crear el dispositivo.");
-      }
-    },
     prepararAsignacion(dispositivo) {
       this.dispositivoSeleccionado = dispositivo;
     },
@@ -334,9 +311,9 @@ export default {
         // Refresca lista
         this.fetchDispositivosByView();
 
-       
 
-        
+
+
         alert("Dispositivo actualizado correctamente.");
       } catch (error) {
         console.error("Error al actualizar el dispositivo:", error);
@@ -345,10 +322,37 @@ export default {
       // Limpia los datos
       this.dispositivoActualizar = null;
 
-    }
+    },
+    async crearDispositivo() {
+      try {
+        await axios.post('http://localhost:8080/dispositivo/insertProcedure/nuevoDispositivo', {
+          tipoDispositivo: this.nuevoDispositivo.tipoDispositivo,
+          manufacturador: this.nuevoDispositivo.manufacturador,
+          modelo: this.nuevoDispositivo.modelo,
+          numeroSerial: this.nuevoDispositivo.numeroSerial
+        });
 
+        // Refrescar la lista de dispositivos
+        this.fetchDispositivosByView();
+
+        // Limpiar el formulario
+        this.nuevoDispositivo = {
+          tipoDispositivo: '',
+          manufacturador: '',
+          modelo: '',
+          numeroSerial: ''
+        };
+
+        
+
+        alert('Dispositivo generado exitosamente.');
+      } catch (error) {
+        console.error("Error al generar dispositivo:", error);
+        alert('No se pudo generar el dispositivo.');
+      }
+    }
   }
-};
+}
 
 </script>
 <style scoped>
