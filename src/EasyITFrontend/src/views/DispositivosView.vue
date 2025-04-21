@@ -74,10 +74,12 @@ import NavBar from '@/components/NavBar.vue';
 
               <td>
                 <span v-if="dispositivo.idUsuario !== null"></span>
-                <button v-else class="btn  btn-success" @click="asignarDispositivo(dispositivo)">
+                <button v-else class="btn  btn-success" data-bs-toggle="modal" data-bs-target="#modalAsignarUsuario"
+                  @click="prepararAsignacion(dispositivo)">
                   Asignar usuario
                 </button>
-                <button type="button" class="btn btn-warning mx-2">Actualizar</button>
+                <button type="button" data-bs-target="#modalActualizarDispositivo" data-bs-toggle="modal"
+                  class="btn btn-warning mx-2" @click=" prepararActualizar(dispositivo)">Actualizar</button>
                 <button type="button" class="btn btn-danger mx-2"
                   @click="deleteDispositivo(dispositivo.idDispositivo)">Borrar</button>
               </td>
@@ -127,7 +129,76 @@ import NavBar from '@/components/NavBar.vue';
     </div>
 
 
+    <!-- Modal: Asignar Usuario -->
+    <div class="modal fade" id="modalAsignarUsuario" tabindex="-1" aria-labelledby="modalAsignarUsuarioLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form @submit.prevent="asignarDispositivo">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalAsignarUsuarioLabel">Asignar Usuario</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              <p><strong>ID del Dispositivo:</strong> {{ dispositivoSeleccionado?.idDispositivo }}</p>
+              <p><strong>Modelo:</strong> {{ dispositivoSeleccionado?.modelo }}</p>
+              <p><strong>Manufacturador:</strong> {{ dispositivoSeleccionado?.manufacturador }}</p>
+              <p><strong>Número serial:</strong> {{ dispositivoSeleccionado?.numeroSerial }}</p>
+              <div class="mb-3">
+                <label class="form-label">ID del Usuario</label>
+                <input type="number" class="form-control" v-model="usuarioAsignado" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-success">Asignar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
+    <!-- Modal: Actualizar Dispositivo -->
+    <div class="modal fade" id="modalActualizarDispositivo" tabindex="-1"
+      aria-labelledby="modalActualizarDispositivoLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form @submit.prevent="confirmarActualizacion">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalActualizarDispositivoLabel">Actualizar Dispositivo</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" v-if="dispositivoActualizar">
+              <input type="hidden" v-model="dispositivoActualizar.idDispositivo" />
+              <div class="mb-3">
+                <label class="form-label">Tipo</label>
+                <input type="text" class="form-control" v-model="dispositivoActualizar.tipoDispositivo" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Manufacturador</label>
+                <input type="text" class="form-control" v-model="dispositivoActualizar.manufacturador" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Modelo</label>
+                <input type="text" class="form-control" v-model="dispositivoActualizar.modelo" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Número Serial</label>
+                <input type="text" class="form-control" v-model="dispositivoActualizar.numeroSerial" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <input type="text" class="form-control" v-model="dispositivoActualizar.statusActual" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -148,6 +219,9 @@ export default {
         modelo: '',
         numeroSerial: '',
       },
+      usuarioAsignado: null,
+      dispositivoSeleccionado: null,
+      dispositivoActualizar: null,
     }
   },
   mounted() {
@@ -208,9 +282,8 @@ export default {
         // Recargar tabla después de crear
         this.fetchDispositivosByView();
 
-        // Cerrar modal manualmente
-        const modal = bootstrap.Modal.getInstance(document.getElementById("modalAgregarDispositivo"));
-        modal.hide();
+
+
 
         // Reset form
         this.nuevoDispositivo = {
@@ -223,6 +296,55 @@ export default {
         console.error("Error al crear dispositivo:", error);
         console.log("Ocurrió un error al crear el dispositivo.");
       }
+    },
+    prepararAsignacion(dispositivo) {
+      this.dispositivoSeleccionado = dispositivo;
+    },
+    async asignarDispositivo() {
+      try {
+        await axios.post("http://localhost:8080/dispositivo/asignarDispositivo", null, {
+          params: {
+            idDispositivo: this.dispositivoSeleccionado.idDispositivo,
+            idUsuario: this.usuarioAsignado
+          }
+        });
+
+        // limpia la lista y la vuelve a renderizar
+        this.fetchDispositivosByView();
+
+
+        alert("Usuario asignado exitosamente");
+        // Reinicia estados
+        this.dispositivoSeleccionado = null;
+        this.usuarioAsignado = null;
+      } catch (error) {
+        console.error("Error al asignar dispositivo:", error);
+        alert("No se pudo asignar el dispositivo.");
+      }
+    },
+    prepararActualizar(dispositivo) {
+      this.dispositivoActualizar = dispositivo;
+    },
+    async confirmarActualizacion() {
+
+
+      try {
+        await axios.post("http://localhost:8080/dispositivo/update", this.dispositivoActualizar);
+
+        // Refresca lista
+        this.fetchDispositivosByView();
+
+       
+
+        
+        alert("Dispositivo actualizado correctamente.");
+      } catch (error) {
+        console.error("Error al actualizar el dispositivo:", error);
+        alert("Ocurrió un error al actualizar el dispositivo.");
+      }
+      // Limpia los datos
+      this.dispositivoActualizar = null;
+
     }
 
   }

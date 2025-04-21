@@ -41,6 +41,7 @@ public class DispositivoServiceImpl implements DispositivoService {
         dispositivoDao.delete(dispositivo);
     }
 
+
     // Procedimiento almacenado: Obtener todos
     @Transactional
     @Override
@@ -107,4 +108,10 @@ public class DispositivoServiceImpl implements DispositivoService {
     public List<TipoDispositivoCount> GET_DISPOSITIVOS_POR_TIPO() {
         return dispositivoDao.getPorTipo();
     }
+
+    @Transactional
+    @Override
+    public void SP_ASIGNAR_DISPOSITIVO(Integer idDispositivo,Integer idUsuario){
+        dispositivoDao.asignarDispositivo(idDispositivo,idUsuario);
+    };
 }

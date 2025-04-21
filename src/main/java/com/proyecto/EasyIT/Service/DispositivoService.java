@@ -36,5 +36,7 @@ public interface DispositivoService {
 
     List<Dispositivo> GET_DISPOSITIVOS_EN_REPARACION();
 
-    List<TipoDispositivoCount> GET_DISPOSITIVOS_POR_TIPO(); // COUNT + GROUP BY
+    List<TipoDispositivoCount> GET_DISPOSITIVOS_POR_TIPO();// COUNT + GROUP BY
+
+    public void SP_ASIGNAR_DISPOSITIVO(Integer idDispositivo,Integer idUsuario);
 }

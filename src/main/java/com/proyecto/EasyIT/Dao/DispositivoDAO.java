@@ -62,4 +62,8 @@ public interface DispositivoDAO extends JpaRepository<Dispositivo, Long> {
     @Procedure(name = "Dispositivo.getEnReparacion")
     List<Dispositivo> getEnReparacion();
 
+    @Procedure(name="Dispositivo.asignarDispositivo")
+    void asignarDispositivo( @Param("p_id_dispositivo") Integer idDispositivo,
+                             @Param("p_id_usuario") Integer idUsuario);
+
 }

@@ -34,10 +34,31 @@ public class DispositivoController {
         return dispositivos;
     }
 
-    //Create y update
+    //Create
     @PostMapping("/create")
     public void createDispositivo(@RequestBody Dispositivo dispositivo) {
         dispositivoService.saveDispositivo(dispositivo);
+    }
+
+
+    //UPDATE
+    @PostMapping("/update")
+    public ResponseEntity<String> updateDispositivo(@RequestBody Dispositivo dispositivo){
+        try {
+            dispositivoService.UPDATE_DISPOSITIVO(
+                    dispositivo.getIdDispositivo(),
+                    dispositivo.getTipoDispositivo(),
+                    dispositivo.getManufacturador(),
+                    dispositivo.getModelo(),
+                    dispositivo.getNumeroSerial(),
+                    dispositivo.getIdUsuario(),
+                    dispositivo.getStatusActual()
+            );
+            return ResponseEntity.ok("Dispositivo actualizado correctamente.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error al actualizar el dispositivo: " + e.getMessage());
+        }
     }
 
     //Delete
@@ -122,6 +143,11 @@ public class DispositivoController {
     public List<TipoDispositivoCount> getPorTipo() {
         return dispositivoService.GET_DISPOSITIVOS_POR_TIPO();
 
+    }
+
+    @PostMapping("/asignarDispositivo")
+    public void asignarDispositivo(@RequestParam Integer idDispositivo, @RequestParam Integer idUsuario){
+        dispositivoService.SP_ASIGNAR_DISPOSITIVO(idDispositivo,idUsuario);
     }
 
 }

@@ -26,7 +26,7 @@ import lombok.Data;
         //Insertar dispositivo completo
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.insertDispositivo",
-                procedureName = "dispositivo_pkg.insert_dispositivo",
+                procedureName = "pkg_dispositivo.insert_dispositivo",
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_tipo", type = String.class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_manufacturador", type = String.class),
@@ -40,7 +40,7 @@ import lombok.Data;
         //Eliminar dispositivo
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.deleteDispositivo",
-                procedureName = "dispositivo_pkg.delete_dispositivo",
+                procedureName = "pkg_dispositivo.delete_dispositivo",
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id", type = Long.class)
                 }
@@ -49,9 +49,9 @@ import lombok.Data;
         //Actualizar dispositivo
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.updateDispositivo",
-                procedureName = "dispositivo_pkg.update_dispositivo",
+                procedureName = "pkg_dispositivo.update_dispositivo",
                 parameters = {
-                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id", type = Long.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id", type = Integer.class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_tipo", type = String.class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_manufacturador", type = String.class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_modelo", type = String.class),
@@ -64,7 +64,7 @@ import lombok.Data;
         //Generar dispositivo sin usuario
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.generarDispositivo",
-                procedureName = "dispositivo_pkg.sp_generar_dispositivo",
+                procedureName = "pkg_dispositivo.sp_generar_dispositivo",
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_tipo", type = String.class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_fabricante", type = String.class),
@@ -76,7 +76,7 @@ import lombok.Data;
         //Obtener todos
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.getAll",
-                procedureName = "dispositivo_pkg.get_all_dispositivos",
+                procedureName = "pkg_dispositivo.get_all_dispositivos",
                 resultClasses = Dispositivo.class,
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, type = void.class)
@@ -86,7 +86,7 @@ import lombok.Data;
         //Obtener por ID
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.getDispositivoById",
-                procedureName = "dispositivo_pkg.get_dispositivo_by_id",
+                procedureName = "pkg_dispositivo.get_dispositivo_by_id",
                 resultClasses = Dispositivo.class,
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id", type = Integer.class),
@@ -97,7 +97,7 @@ import lombok.Data;
         //Vistas
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.getDisponibles",
-                procedureName = "dispositivo_pkg.sp_get_dispositivos_disponibles",
+                procedureName = "pkg_dispositivo.sp_get_dispositivos_disponibles",
                 resultClasses = Dispositivo.class,
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, type = void.class)
@@ -106,7 +106,7 @@ import lombok.Data;
 
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.getAsignados",
-                procedureName = "dispositivo_pkg.sp_get_dispositivos_asignados",
+                procedureName = "pkg_dispositivo.sp_get_dispositivos_asignados",
                 resultClasses = Dispositivo.class,
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, type = void.class)
@@ -115,7 +115,7 @@ import lombok.Data;
 
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.getPorTipo",
-                procedureName = "dispositivo_pkg.sp_get_dispositivos_por_tipo",
+                procedureName = "pkg_dispositivo.sp_get_dispositivos_por_tipo",
                 resultSetMappings = "TipoDispositivoCountMapping",
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, type = void.class)
@@ -124,10 +124,18 @@ import lombok.Data;
 
         @NamedStoredProcedureQuery(
                 name = "Dispositivo.getEnReparacion",
-                procedureName = "dispositivo_pkg.sp_get_dispositivos_reparacion",
+                procedureName = "pkg_dispositivo.sp_get_dispositivos_reparacion",
                 resultClasses = Dispositivo.class,
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, type = void.class)
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "Dispositivo.asignarDispositivo",
+                procedureName = "pkg_dispositivo.sp_asignar_dispositivo",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id_dispositivo", type = Integer.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id_usuario", type = Integer.class)
                 }
         )
 
